@@ -1,0 +1,44 @@
+<h4 class="display-4">Order Food Item</h4>
+<hr>
+<form autocomplete="false">
+    <div class="form-group">
+        <label> Food Item </label>
+        <select  class="form-control" name="ItemId" #ItemId="ngModel" [(ngModel)]="formData.ItemId">
+          <option value="0">Seleccione</option>
+        </select>
+    </div>
+
+  <div class="form-row">
+
+    <div class="form-group col-md-6">
+      <label>Price</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text">$</div>
+        </div>
+        <input  class="form-control" name="Price" #Price="ngModel" [(ngModel)]="formData.Price" readonly>
+      </div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label>Quantity</label>
+        <input  class="form-control" name="Quantity" #Quantity="ngModel" [(ngModel)]="formData.Quantity">
+    </div>
+
+  </div>
+
+  <div class="form-group">
+    <label>Total</label>
+    <div class="input-group">
+      <div class="input-group-prepend">
+          <div class="input-group-text">$</div>
+      </div>
+      <input  class="form-control" name="Total" #Total="ngModel" [(ngModel)]="formData.Total" readonly>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-dark"><i class="fa fa-database"></i> Submit</button>
+    <button type="button" class="btn btn-outline-dark ml-1"><i class="fas fa-window-close"></i> Close</button>
+  </div>
+</form>
