@@ -43,7 +43,7 @@ export class OrderComponent implements OnInit {
   }
 
 
-  AddOrEditOrderItem(orderItemIndex, OrderID): void{
+  AddOrEditOrderItem(orderItemIndex: number, OrderID): void{
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
@@ -55,5 +55,8 @@ export class OrderComponent implements OnInit {
   }
 
 
-
+  onDeleteOrderItem(OrderItemId: number, i: number): void {
+    this.service.orderItems.splice(i, 1);
+    // OrderItemId se necesitara cuando se requiera actualizar toda la orden
+  }
 }

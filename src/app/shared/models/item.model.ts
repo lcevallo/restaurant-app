@@ -1,5 +1,5 @@
 export class Item {
-  ItemId: number;
-  Name: string;
-  Price: number;
+  item_id: number;
+  name: string;
+  price: number;
 }
