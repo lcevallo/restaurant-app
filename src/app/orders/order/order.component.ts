@@ -3,6 +3,10 @@ import {OrderService} from '@shared/services/order.service';
 import {NgForm} from '@angular/forms';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {OrderItemsComponent} from '../order-items/order-items.component';
+import { CustomerService } from '@shared/services/customer.service';
+import { Customer } from '@shared/models/customer.model';
+
+
 
 @Component({
   selector: 'app-order',
@@ -12,18 +16,22 @@ import {OrderItemsComponent} from '../order-items/order-items.component';
 export class OrderComponent implements OnInit {
 
   public id: number;
+  customerList: Customer[];
+  isValid = true;
 
 
   constructor(
     public service: OrderService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private customerService: CustomerService
     ) { }
 
   ngOnInit(): void {
     this.resetForm();
+    this.customerService.getCustomerList().then(res => this.customerList = res[0] as Customer[] );
   }
 
-  resetForm(form?: NgForm){
+  resetForm(form?: NgForm): void{
 
     if (form = null) {
       form.resetForm();
@@ -50,7 +58,14 @@ export class OrderComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.width = '50%';
     dialogConfig.data = {orderItemIndex, OrderID};
-    this.dialog.open(OrderItemsComponent, dialogConfig);
+    /**
+     * Despues de cerrar el dialogo que servira para seleccionar el item de comida actualizare el Grand Total
+     */
+    this.dialog.open(OrderItemsComponent, dialogConfig).afterClosed().subscribe(
+      res => {
+        this.updateGrandTotal();
+      }
+    );
 
   }
 
@@ -58,5 +73,38 @@ export class OrderComponent implements OnInit {
   onDeleteOrderItem(OrderItemId: number, i: number): void {
     this.service.orderItems.splice(i, 1);
     // OrderItemId se necesitara cuando se requiera actualizar toda la orden
+
+    this.updateGrandTotal();
   }
+
+  /**
+   * Cuando se agrega o se elimina un item de comida se actualizara el valor del Grand Total
+   */
+  updateGrandTotal(): void {
+    this.service.formData.GTotal = this.service.orderItems.reduce((prev, curr) => {
+          return prev + curr.Total;
+          }, 0);
+
+    this.service.formData.GTotal  = parseFloat( this.service.formData.GTotal.toFixed(2));
+  }
+
+  validateForm(): boolean {
+    this.isValid = true;
+    if (this.service.formData.CustomerId == 0)
+      {
+        this.isValid = false;
+      }
+    else if (this.service.orderItems.length == 0)
+      {
+        this.isValid = false;
+      }
+    return this.isValid;
+  }
+
+  onSubmit(form: NgForm): void {
+      if (this.validateForm()) {
+
+      }
+  }
+
 }

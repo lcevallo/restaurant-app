@@ -4,6 +4,9 @@ export const API_ROUTES = {
     ITEMS : {
         ITEM: `${ENV.baseUrl}item`,
         LISTA : `${ENV.baseUrl}items`
+    },
+    CLIENTES: {
+            LISTA : `${ENV.baseUrl}customers`
     }
 
 }

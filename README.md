@@ -28,4 +28,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ng add @angular/material@11.0.0
 
-ng g m material  --dry-run --flat 
+ng g m material --flat
+
+https://coolors.co/palettes/trending
