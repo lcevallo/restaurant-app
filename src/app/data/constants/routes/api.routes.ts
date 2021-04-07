@@ -7,6 +7,9 @@ export const API_ROUTES = {
     },
     CLIENTES: {
             LISTA : `${ENV.baseUrl}customers`
+    },
+    ORDER:{
+        LISTA:`${ENV.baseUrl}orders`
     }
 
 }

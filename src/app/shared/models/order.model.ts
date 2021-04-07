@@ -1,7 +1,7 @@
 export class Order {
-  OrderId = 0;
-  OrderNo = '';
-  CustomerId = 0;
-  PMethod = '';
-  GTotal = 0;
+  order_id = 0;
+  order_no = '';
+  customer_id = 0;
+  p_method = '';
+  g_total = 0;
 }

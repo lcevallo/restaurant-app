@@ -28,7 +28,7 @@ export class OrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetForm();
-    this.customerService.getCustomerList().then(res => this.customerList = res[0] as Customer[] );
+    this.customerService.getCustomerList().then(res => this.customerList = res as Customer[] );
   }
 
   resetForm(form?: NgForm): void{
@@ -38,11 +38,11 @@ export class OrderComponent implements OnInit {
     }
 
     this.service.formData = {
-      OrderId : null,
-      OrderNo : Math.floor(100000 + Math.random() * 900000).toString(),
-      CustomerId : 0,
-      PMethod : '',
-      GTotal : 0
+      order_id : null,
+      order_no : Math.floor(100000 + Math.random() * 900000).toString(),
+      customer_id : 0,
+      p_method : '',
+      g_total : 0
     };
 
     this.service.orderItems = [];
@@ -51,13 +51,13 @@ export class OrderComponent implements OnInit {
   }
 
 
-  AddOrEditOrderItem(orderItemIndex: number, OrderID): void{
+  AddOrEditOrderItem(orderItemIndex: number, order_id): void{
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.disableClose = true;
     dialogConfig.width = '50%';
-    dialogConfig.data = {orderItemIndex, OrderID};
+    dialogConfig.data = {orderItemIndex, order_id};
     /**
      * Despues de cerrar el dialogo que servira para seleccionar el item de comida actualizare el Grand Total
      */
@@ -81,16 +81,16 @@ export class OrderComponent implements OnInit {
    * Cuando se agrega o se elimina un item de comida se actualizara el valor del Grand Total
    */
   updateGrandTotal(): void {
-    this.service.formData.GTotal = this.service.orderItems.reduce((prev, curr) => {
+    this.service.formData.g_total = this.service.orderItems.reduce((prev, curr) => {
           return prev + curr.Total;
           }, 0);
 
-    this.service.formData.GTotal  = parseFloat( this.service.formData.GTotal.toFixed(2));
+    this.service.formData.g_total  = parseFloat( this.service.formData.g_total.toFixed(2));
   }
 
   validateForm(): boolean {
     this.isValid = true;
-    if (this.service.formData.CustomerId == 0)
+    if (this.service.formData.customer_id == 0)
       {
         this.isValid = false;
       }
@@ -103,7 +103,10 @@ export class OrderComponent implements OnInit {
 
   onSubmit(form: NgForm): void {
       if (this.validateForm()) {
-
+          this.service.saveOrUpdateOrder().subscribe(res => {
+                    this.resetForm();
+               }
+          )
       }
   }
 

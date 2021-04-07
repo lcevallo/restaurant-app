@@ -1,13 +1,13 @@
 <h4 class="display-4">Order Food Item</h4>
 <hr>
 <form autocomplete="false" #orderItemF = "ngForm" (submit)="onSubmit(orderItemF)">
-  <input type="hidden" name="OrderItemId" #OrderItemId="ngModel" [(ngModel)]="formData.OrderItemId">
-  <input type="hidden" name="OrderId" #OrderId="ngModel" [(ngModel)]="formData.OrderId">
+  <input type="hidden" name="order_item_id" #order_item_id="ngModel" [(ngModel)]="formData.order_item_id">
+  <input type="hidden" name="order_id" #order_id="ngModel" [(ngModel)]="formData.order_id">
   <input type="hidden" name="ItemName" #ItemName="ngModel" [(ngModel)]="formData.ItemName">
     <div class="form-group">
         <label> Food Item </label>
-        <select  class="form-control" name="ItemId" #ItemId="ngModel" [(ngModel)]="formData.ItemId" (change)="updatePrice($event.target)"
-        [class.is-invalid]="!isValid && formData.ItemId==0" >
+        <select  class="form-control" name="item_id" #item_id="ngModel" [(ngModel)]="formData.item_id" (change)="updateprice($event.target)"
+        [class.is-invalid]="!isValid && formData.item_id==0" >
           <option value="0">Seleccione</option>
           <option *ngFor="let item of itemList" value="{{item.item_id}}">
             {{item.name}}
@@ -18,19 +18,19 @@
   <div class="form-row">
 
     <div class="form-group col-md-6">
-      <label>Price</label>
+      <label>price</label>
       <div class="input-group">
         <div class="input-group-prepend">
             <div class="input-group-text">$</div>
         </div>
-        <input  class="form-control" name="Price" #Price="ngModel" [(ngModel)]="formData.Price" readonly>
+        <input  class="form-control" name="price" #price="ngModel" [(ngModel)]="formData.price" readonly>
       </div>
     </div>
 
     <div class="form-group col-md-6">
-      <label>Quantity</label>
-        <input  class="form-control" name="Quantity" #Quantity="ngModel" [(ngModel)]="formData.Quantity"
-        (keyup)="updateTotal()"  [class.is-invalid]="!isValid && formData.Quantity==0" >
+      <label>quantity</label>
+        <input  class="form-control" name="quantity" #quantity="ngModel" [(ngModel)]="formData.quantity"
+        (keyup)="updateTotal()"  [class.is-invalid]="!isValid && formData.quantity==0" >
     </div>
 
   </div>

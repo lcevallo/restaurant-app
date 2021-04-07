@@ -27,17 +27,17 @@ export class OrderItemsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.itemService.getItemList().then(res => this.itemList = res[0] as Item[] );
+    this.itemService.getItemList().then(res => this.itemList = res as Item[] );
 
     // this.data.orderItemIndex Es lo que viene del componente Order cuando abre el modal cuando es nuevo trae null
     if (this.data.orderItemIndex == null) {
             this.formData = {
-              OrderItemId: null,
-              OrderId: this.data.OrderID,
-              ItemId: 0,
-              Quantity: 0,
+              order_item_id: null,
+              order_id: this.data.order_id,
+              item_id: 0,
+              quantity: 0,
               ItemName: '',
-              Price: 0,
+              price: 0,
               Total: 0
             };
         }
@@ -48,20 +48,20 @@ export class OrderItemsComponent implements OnInit {
 
   }
 
-  updatePrice(ctrl): void{
+  updateprice(ctrl): void{
     if (ctrl.selectedIndex == 0){
-          this.formData.Price = 0;
+          this.formData.price = 0;
           this.formData.ItemName = '';
         }
     else{
-      this.formData.Price = this.itemList[ctrl.selectedIndex-1].price;
+      this.formData.price = this.itemList[ctrl.selectedIndex-1].price;
       this.formData.ItemName = this.itemList[ctrl.selectedIndex-1].name;
     }
     this.updateTotal();
   }
 
   updateTotal(): void {
-    this.formData.Total = parseFloat((this.formData.Quantity * this.formData.Price).toFixed(2));
+    this.formData.Total = parseFloat((this.formData.quantity * this.formData.price).toFixed(2));
   }
 
   onSubmit(form): void{
@@ -82,10 +82,10 @@ export class OrderItemsComponent implements OnInit {
 
   validateForm(formData: OrderItem): boolean{
     this.isValid = true;
-    if (formData.ItemId == 0) {
+    if (formData.item_id == 0) {
       this.isValid = false;
     }
-    else if (formData.Quantity == 0){
+    else if (formData.quantity == 0){
       this.isValid = false;
     }
     return this.isValid;

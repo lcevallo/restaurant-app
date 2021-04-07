@@ -7,14 +7,14 @@
           <div class="input-group-prepend">
               <div class="input-group-text">#</div>
           </div>
-          <input  class="form-control" name="OrderNo" #OrderNo="ngModel" [(ngModel)]="service.formData.OrderNo" readonly>
+          <input  class="form-control" name="order_no" #order_no="ngModel" [(ngModel)]="service.formData.order_no" readonly>
         </div>
       </div>
 
       <div class="form-group">
         <label>Customer</label>
-        <select class="form-control" name="CustomerId" #CustomerId="ngModel" [(ngModel)]="service.formData.CustomerId"
-         [class.is-invalid]="!isValid && service.formData.CustomerId==0">
+        <select class="form-control" name="customer_id" #customer_id="ngModel" [(ngModel)]="service.formData.customer_id"
+         [class.is-invalid]="!isValid && service.formData.customer_id==0">
            <option value="0">Seleccione</option>
            <option *ngFor="let customer of customerList" value="{{customer.customer_id}}" >{{customer.name}}</option>
         </select>
@@ -24,7 +24,7 @@
     <div class="col-md-6">
       <div class="form-group">
         <label>Payment Method</label>
-        <select  class="form-control" name="PMethod" #PMethod="ngModel" [(ngModel)]="service.formData.PMethod">
+        <select  class="form-control" name="p_method" #p_method="ngModel" [(ngModel)]="service.formData.p_method">
           <option value="">Seleccione</option>
           <option value="cash">Cash</option>
           <option value="Card">Card</option>
@@ -38,7 +38,7 @@
           <div class="input-group-prepend">
               <div class="input-group-text">$</div>
           </div>
-          <input  class="form-control" name="GTotal" #GTotal="ngModel" [(ngModel)]="service.formData.GTotal" readonly>
+          <input  class="form-control" name="g_total" #g_total="ngModel" [(ngModel)]="service.formData.g_total" readonly>
         </div>
 
       </div>
@@ -54,7 +54,7 @@
         <th>Quantity</th>
         <th>Total</th>
         <th>
-          <a class="btn btn-sm btn-success text-white" (click)="AddOrEditOrderItem(null,service.formData.OrderId)"><i class="fa fa-plus"></i>Add Item</a>
+          <a class="btn btn-sm btn-success text-white" (click)="AddOrEditOrderItem(null,service.formData.order_id)"><i class="fa fa-plus"></i>Add Item</a>
         </th>
     </thead>
     <tbody>
@@ -68,13 +68,13 @@
 
       <tr *ngFor="let item of service.orderItems; let i= index">
         <td>{{item.ItemName}}</td>
-        <td>{{item.Price}}</td>
-        <td>{{item.Quantity}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.quantity}}</td>
         <td>{{item.Total}}</td>
         <td>
-          <a class="btn btn-sm btn-info text-white" (click)="AddOrEditOrderItem(i,service.formData.OrderId)">
+          <a class="btn btn-sm btn-info text-white" (click)="AddOrEditOrderItem(i,service.formData.order_id)">
             <i class="fa fa-pencil"></i></a>
-          <a class="btn btn-sm btn-danger text-white ml-1" (click)="onDeleteOrderItem(item.OrderItemId,i)">
+          <a class="btn btn-sm btn-danger text-white ml-1" (click)="onDeleteOrderItem(item.order_item_id,i)">
             <i class="fa fa-trash"></i>
           </a>
         </td>

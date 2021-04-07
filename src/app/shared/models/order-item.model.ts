@@ -1,9 +1,9 @@
 export class OrderItem {
-  OrderItemId: number;
-  OrderId: number;
-  ItemId: number;
-  Quantity: number;
+  order_item_id: number;
+  order_id: number;
+  item_id: number;
+  quantity: number;
   ItemName: string;
-  Price: number;
+  price: number;
   Total: number;
 }
