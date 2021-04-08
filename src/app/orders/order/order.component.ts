@@ -5,6 +5,10 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {OrderItemsComponent} from '../order-items/order-items.component';
 import { CustomerService } from '@shared/services/customer.service';
 import { Customer } from '@shared/models/customer.model';
+import { ToastrService } from 'ngx-toastr';
+import {ActivatedRoute, Router} from '@angular/router';
+import {IOrders} from '@shared/interfaces/i-orders';
+import {OrderItem} from '@shared/models/order-item.model';
 
 
 
@@ -18,18 +22,54 @@ export class OrderComponent implements OnInit {
   public id: number;
   customerList: Customer[];
   isValid = true;
-
+  ordersRes: IOrders;
 
   constructor(
     public service: OrderService,
     private dialog: MatDialog,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private toaster: ToastrService,
+    private router: Router,
+    private  currentRoute: ActivatedRoute
     ) { }
 
   ngOnInit(): void {
-    this.resetForm();
+
+    const orderID = this.currentRoute.snapshot.paramMap.get('id');
+
+    // Insert Operation
+    if (orderID == null) {
+      this.resetForm();
+    }
+    else{
+        this.service.getOrderById(+orderID).then(res => {
+          this.ordersRes = res as IOrders;
+          this.service.formData = this.ordersRes;
+          const orderItemsArray = this.ordersRes.order_items.map( obj => obj.items);
+          this.service.orderItems = [];
+          for (let j = 0 ; j < this.ordersRes.order_items.length; j++ ){
+                    this.service.orderItems.push({
+                      order_item_id: this.ordersRes.order_items[j].order_item_id,
+                      ItemName: '',
+                      Total: 0,
+                      item_id: this.ordersRes.order_items[j].item_id,
+                      order_id: +orderID,
+                      price: 0,
+                      quantity: this.ordersRes.order_items[j].quantity
+                    });
+          }
+          for (let i = 0 ; i < orderItemsArray.length; i++) {
+            this.service.orderItems[i].ItemName = orderItemsArray[i].name;
+            this.service.orderItems[i].price = orderItemsArray[i].price;
+            this.service.orderItems[i].Total = parseFloat((this.service.orderItems[i].quantity * orderItemsArray[i].price).toFixed(2));
+          }
+          // this.service.convert(this.ordersRes.order_items);
+        });
+
+    }
     this.customerService.getCustomerList().then(res => this.customerList = res as Customer[] );
   }
+
 
   resetForm(form?: NgForm): void{
 
@@ -42,7 +82,8 @@ export class OrderComponent implements OnInit {
       order_no : Math.floor(100000 + Math.random() * 900000).toString(),
       customer_id : 0,
       p_method : '',
-      g_total : 0
+      g_total : 0,
+      deletedOrderItemsIDs:''
     };
 
     this.service.orderItems = [];
@@ -71,9 +112,13 @@ export class OrderComponent implements OnInit {
 
 
   onDeleteOrderItem(OrderItemId: number, i: number): void {
-    this.service.orderItems.splice(i, 1);
+    
     // OrderItemId se necesitara cuando se requiera actualizar toda la orden
-
+    if(OrderItemId!=null){
+      this.service.formData.deletedOrderItemsIDs += OrderItemId + ",";
+    }
+    
+    this.service.orderItems.splice(i, 1);
     this.updateGrandTotal();
   }
 
@@ -105,8 +150,10 @@ export class OrderComponent implements OnInit {
       if (this.validateForm()) {
           this.service.saveOrUpdateOrder().subscribe(res => {
                     this.resetForm();
+                    this.toaster.success('Guardado exitoso!', 'Restaurant-APP');
+                    this.router.navigate(['/orders']);
                }
-          )
+          );
       }
   }
 

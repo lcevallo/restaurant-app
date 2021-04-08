@@ -66,7 +66,7 @@ export class OrderItemsComponent implements OnInit {
 
   onSubmit(form): void{
 
-      if (this.validateForm(form.value)){
+      if (this.validateForm(form.value)) {
 
         // Verifico que sea nuevo si no es nuevo significa que debo de actualizar
         if ( this.data.orderItemIndex == null ) {

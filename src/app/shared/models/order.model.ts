@@ -4,4 +4,5 @@ export class Order {
   customer_id = 0;
   p_method = '';
   g_total = 0;
+  deletedOrderItemsIDs: string;
 }

@@ -1,4 +1,4 @@
-import  {environment as ENV} from 'environments/environment';
+import {environment as ENV} from 'environments/environment';
 
 export const API_ROUTES = {
     ITEMS : {
@@ -8,8 +8,9 @@ export const API_ROUTES = {
     CLIENTES: {
             LISTA : `${ENV.baseUrl}customers`
     },
-    ORDER:{
-        LISTA:`${ENV.baseUrl}orders`
+    ORDER: {
+        LISTA: `${ENV.baseUrl}orders`,
+        TABLE: `${ENV.baseUrl}table-orders`
     }
 
 }
