@@ -8,7 +8,6 @@ import { Customer } from '@shared/models/customer.model';
 import { ToastrService } from 'ngx-toastr';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IOrders} from '@shared/interfaces/i-orders';
-import {OrderItem} from '@shared/models/order-item.model';
 
 
 
@@ -44,7 +43,17 @@ export class OrderComponent implements OnInit {
     else{
         this.service.getOrderById(+orderID).then(res => {
           this.ordersRes = res as IOrders;
-          this.service.formData = this.ordersRes;
+
+
+          this.service.formData = {
+            customer_id: this.ordersRes.customer_id,
+            deletedOrderItemsIDs: '',
+            g_total: this.ordersRes.g_total,
+            order_id: this.ordersRes.order_id,
+            order_no: this.ordersRes.order_no,
+            p_method: this.ordersRes.p_method
+          };
+
           const orderItemsArray = this.ordersRes.order_items.map( obj => obj.items);
           this.service.orderItems = [];
           for (let j = 0 ; j < this.ordersRes.order_items.length; j++ ){
@@ -83,7 +92,7 @@ export class OrderComponent implements OnInit {
       customer_id : 0,
       p_method : '',
       g_total : 0,
-      deletedOrderItemsIDs:''
+      deletedOrderItemsIDs: ''
     };
 
     this.service.orderItems = [];
@@ -112,12 +121,14 @@ export class OrderComponent implements OnInit {
 
 
   onDeleteOrderItem(OrderItemId: number, i: number): void {
-    
+
     // OrderItemId se necesitara cuando se requiera actualizar toda la orden
-    if(OrderItemId!=null){
-      this.service.formData.deletedOrderItemsIDs += OrderItemId + ",";
+    if (OrderItemId != null){
+      console.log(OrderItemId);
+      this.service.formData.deletedOrderItemsIDs += OrderItemId.toString() + ',';
+      console.log(this.service.formData.deletedOrderItemsIDs);
     }
-    
+
     this.service.orderItems.splice(i, 1);
     this.updateGrandTotal();
   }
